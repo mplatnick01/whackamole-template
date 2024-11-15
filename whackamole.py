@@ -19,9 +19,11 @@ def draw_grid(screen):
         pygame.draw.line(screen, GRID_COLOR, (x, 0), (x, WINDOW_HEIGHT))
     for y in range(0, WINDOW_HEIGHT, GRID_HEIGHT):
         pygame.draw.line(screen, GRID_COLOR, (0, y), (WINDOW_WIDTH, y))
+
 def draw_mole(screen, mole_image, mole_pos):
     """Draw the mole image at the given position (mole_pos)."""
     screen.blit(mole_image, mole_image.get_rect(topleft=(mole_pos[0] * GRID_WIDTH, mole_pos[1] * GRID_HEIGHT)))
+
 def handle_click(event, mole_pos):
     """Move the mole to a random position when clicked."""
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -34,6 +36,7 @@ def handle_click(event, mole_pos):
         if (clicked_column, clicked_row) == mole_pos:
             mole_pos = (random.randint(0, GRID_COLUMNS-1), random.randint(0, GRID_ROWS-1))
     return mole_pos
+
 def main():
     pygame.init()
 
@@ -41,11 +44,12 @@ def main():
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption("Whack-a-Mole")
 
-    # Load the mole image
+    # Load the mole image and scale it to fit in the grid
     mole_image = pygame.image.load("mole.png")
+    mole_image = pygame.transform.scale(mole_image, (GRID_WIDTH, GRID_HEIGHT))  # Resize to grid size
     
-    # Initial position of the mole (top-left corner)
-    mole_pos = (0, 0)
+    # Initial position of the mole (randomly placed at the start)
+    mole_pos = (random.randint(0, GRID_COLUMNS-1), random.randint(0, GRID_ROWS-1))
 
     # Create the clock object to control frame rate
     clock = pygame.time.Clock()
